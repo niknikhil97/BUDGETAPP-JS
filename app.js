@@ -32,7 +32,20 @@ var UIController = (function () {
 
 // GLOBAL APP CONTROLLER
 var Controller = (function (budgetCtrl, UICtrl) {
-  var DOM = UICtrl.getDOMstrings();
+  // function to call eventlisteners
+  var setupEventListeners = function () {
+    var DOM = UICtrl.getDOMstrings();
+    document
+      .querySelector(DOM.inputButton)
+      .addEventListener("click", ctrlAddItem);
+
+    document.addEventListener("keypress", function (event) {
+      if (event.keyCode === 13 || event.which === 13) {
+        ctrlAddItem();
+      }
+    });
+  };
+  // function to get input values from UI
   var ctrlAddItem = function () {
     // 1. select the add field
     var input = UIController.getInput();
@@ -42,13 +55,13 @@ var Controller = (function (budgetCtrl, UICtrl) {
     // 4. calculate the budget
     // 5. display the budget on the ui
   };
-  document
-    .querySelector(DOM.inputButton)
-    .addEventListener("click", ctrlAddItem);
 
-  document.addEventListener("keypress", function (event) {
-    if (event.keyCode === 13 || event.which === 13) {
-      ctrlAddItem();
-    }
-  });
+  return {
+    init: function () {
+      console.log("APPLICATION STARTED");
+      setupEventListeners();
+    },
+  };
 })(budgetController, UIController);
+
+Controller.init();

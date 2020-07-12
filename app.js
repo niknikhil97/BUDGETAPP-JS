@@ -93,6 +93,10 @@ var UIController = (function () {
     inputButton: ".add__btn",
     expenseItem: ".expenses__list",
     incomeItem: ".income__list",
+    budgetLabel: ".budget__value",
+    incomeLabel: ".budget__income--value",
+    expensesLabel: ".budget__expenses--value",
+    percentageLabel: ".budget__expenses--percentage",
   };
   return {
     getInput: function () {
@@ -135,6 +139,14 @@ var UIController = (function () {
         current.value = "";
       });
     },
+    displayBudget: function (obj) {
+      document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
+      document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
+      document.querySelector(DOMstrings.expensesLabel).textContent =
+        obj.totalExp;
+      document.querySelector(DOMstrings.percentageLabel).textContent =
+        obj.percentage;
+    },
   };
 })();
 
@@ -159,7 +171,7 @@ var Controller = (function (budgetCtrl, UICtrl) {
     // return the budget
     var budget = budgetCtrl.getBudget();
     // Display the budget on the UI
-    console.log(budget);
+    UICtrl.displayBudget(budget);
   };
   // function to get input values from UI
   var ctrlAddItem = function () {
@@ -180,6 +192,12 @@ var Controller = (function (budgetCtrl, UICtrl) {
   return {
     init: function () {
       console.log("APPLICATION STARTED");
+      UICtrl.displayBudget({
+        budget: 0,
+        totalExp: 0,
+        totalInc: 0,
+        percentage: 0,
+      });
       setupEventListeners();
     },
   };

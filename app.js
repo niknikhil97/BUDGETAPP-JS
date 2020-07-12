@@ -55,9 +55,6 @@ var budgetController = (function () {
       // Return the new element
       return newItem;
     },
-    testDisplay: function () {
-      console.log(data);
-    },
     calculateBudget: function () {
       // calculate total expenses and income
       calculateTotal("exp");
@@ -79,6 +76,10 @@ var budgetController = (function () {
         totalExp: data.totals.exp,
         totalInc: data.totals.inc,
       };
+    },
+    // only for testing purpose
+    testDisplay: function () {
+      console.log(data);
     },
   };
 })();

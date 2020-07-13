@@ -77,6 +77,18 @@ var budgetController = (function () {
         totalInc: data.totals.inc,
       };
     },
+    deleteItem: function (type, id) {
+      // grab the index
+      var index;
+      var ids = data.allItems[type].map(function (current) {
+        return current.id;
+      });
+      index = ids.indexOf(id);
+      // delete the item
+      if (index !== -1) {
+        data.allItems[type].splice(index, 1);
+      }
+    },
     // only for testing purpose
     testDisplay: function () {
       console.log(data);
@@ -179,12 +191,17 @@ var Controller = (function (budgetCtrl, UICtrl) {
   // function to delete item from the UI
   var ctrlDelete = function (event) {
     var itemID, splitID, type, id;
+    // inc-1
     itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
     if (itemID) {
       splitID = itemID.split("-");
       type = splitID[0];
-      id = splitID[1];
+      id = parseInt(splitID[1]);
     }
+    budgetCtrl.deleteItem(type, id);
+    // delete the item
+    //update the UI
+    //calculate the budget and show the budget
   };
 
   // function to get input values from UI

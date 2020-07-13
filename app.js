@@ -161,6 +161,10 @@ var UIController = (function () {
       document.querySelector(DOMstrings.percentageLabel).textContent =
         obj.percentage;
     },
+    deleteListItem: function (selectorId) {
+      var el = document.getElementById(selectorId);
+      el.parentNode.removeChild(el);
+    },
   };
 })();
 
@@ -194,14 +198,17 @@ var Controller = (function (budgetCtrl, UICtrl) {
     // inc-1
     itemID = event.target.parentNode.parentNode.parentNode.parentNode.id;
     if (itemID) {
+      //testonly
       splitID = itemID.split("-");
       type = splitID[0];
       id = parseInt(splitID[1]);
+      // delete the item
+      budgetCtrl.deleteItem(type, id);
+      //update the UI
+      UICtrl.deleteListItem(itemID);
+      //update the budget and budget ui
+      updateBudget();
     }
-    budgetCtrl.deleteItem(type, id);
-    // delete the item
-    //update the UI
-    //calculate the budget and show the budget
   };
 
   // function to get input values from UI

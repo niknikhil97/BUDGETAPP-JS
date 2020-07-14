@@ -121,6 +121,19 @@ var budgetController = (function () {
 // UI CONTROLLER
 var UIController = (function () {
   // some code
+  var formatNumber = function (num, type) {
+    var numSplit, int, dec;
+    num = Math.abs(num);
+    num = num.toFixed(2);
+    numSplit = num.split(".");
+    int = numSplit[0];
+    dec = numSplit[1];
+    if (int.length > 3) {
+      int = int.substr(0, int.length - 3) + "," + int.substr(int.length - 3, 3);
+    }
+    return (type === "inc" ? "+" : "-") + int + "." + dec;
+  };
+
   var DOMstrings = {
     inputType: ".add__type",
     inputDescription: ".add__description",
@@ -162,7 +175,7 @@ var UIController = (function () {
       // add the placeholders
       newhtml = html.replace("%id%", obj.id);
       newhtml = newhtml.replace("%description%", obj.description);
-      newhtml = newhtml.replace("%value%", obj.value);
+      newhtml = newhtml.replace("%value%", formatNumber(obj.value, type));
       // add the html to the UI
       document.querySelector(element).insertAdjacentHTML("beforeend", newhtml);
     },
@@ -177,10 +190,19 @@ var UIController = (function () {
       });
     },
     displayBudget: function (obj) {
-      document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
-      document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
-      document.querySelector(DOMstrings.expensesLabel).textContent =
-        obj.totalExp;
+      var btype;
+      obj.budget > 0 ? (btype = "inc") : (btype = "exp");
+      document.querySelector(DOMstrings.budgetLabel).textContent = formatNumber(
+        obj.budget,
+        btype
+      );
+      document.querySelector(DOMstrings.incomeLabel).textContent = formatNumber(
+        obj.totalInc,
+        "inc"
+      );
+      document.querySelector(
+        DOMstrings.expensesLabel
+      ).textContent = formatNumber(obj.totalExp, "exp");
       if (obj.percentage > 0) {
         document.querySelector(DOMstrings.percentageLabel).textContent =
           obj.percentage;
